@@ -6,3 +6,6 @@ nave: { largo: 60, ancho: 25, altura_libre: 8 }
 estructura: { tipo: porticos_metalicos, modulacion: 6, pendiente_cubierta_pct: 10 }
 piso: { sobrecarga_kN_m2: 30 }
 electrico: { potencia_kVA: 150, tension: trifasica }
+# Simulación de sitio (opcional): posición de la nave en el lote y logística.
+implantacion: { x_m: 4.5, y_m: 8, rotacion_grados: 0 }
+logistica: { autos_cantidad: 12, camiones_cantidad: 6, angulo_estacionamiento: 90, muelles_en: auto }

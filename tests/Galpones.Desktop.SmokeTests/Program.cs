@@ -50,6 +50,10 @@ public static class Program
             ((RadioButton)window.FindName("SiteButton")).IsChecked = true;
             Check(editor.SiteLayout is { EstacionamientoAutos.Count: > 0, Muelles.Count: > 0 }, "Simulación de sitio generada");
             Capture(window, Path.Combine(output, "desktop-sitio.png"));
+            editor.SetImplantacion(10, 10);
+            Check(editor.SiteLayout!.Nave.X == 10 && editor.SiteLayout.Nave.Y == 10, "Arrastre interactivo mueve la nave");
+            Check(editor.SiteLayout.Metricas.CoberturaPct > 0 && editor.SiteLayout.Metricas.SuperficieEstacionamientoM2 > 0, "Métricas de sitio calculadas");
+            Capture(window, Path.Combine(output, "desktop-sitio-movido.png"));
             ((RadioButton)window.FindName("AxonButton")).IsChecked = true;
 
             editor.Fields["ancho"].Value = "inválido";

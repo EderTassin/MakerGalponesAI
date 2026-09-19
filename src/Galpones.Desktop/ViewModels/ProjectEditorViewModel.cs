@@ -47,7 +47,31 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
     public string PreviewCaption => Input is null ? "Completá los datos para generar la vista." : $"{Input.Nave.Largo:0.##} × {Input.Nave.Ancho:0.##} m  ·  Altura de referencia {Input.Nave.AlturaLibre:0.##} m  ·  Pendiente {Model!.PendienteCubiertaPct:0.##}%";
     public string ParkingSpots => SiteLayout?.EstacionamientoAutos.Count.ToString() ?? "—";
     public string TruckDocks => SiteLayout?.Muelles.Count.ToString() ?? "—";
-    public string SitePreviewCaption => SiteLayout is null ? "Completá los datos para simular el sitio." : $"Lote {SiteLayout.LoteFrenteM:0.##} × {SiteLayout.LoteFondoM:0.##} m  ·  {SiteLayout.EstacionamientoAutos.Count} espacios de auto  ·  {SiteLayout.Muelles.Count} muelles de carga";
+    public string SitePreviewCaption => SiteLayout is null
+        ? "Completá los datos para simular el sitio."
+        : $"Cobertura {SiteLayout.Metricas.CoberturaPct:0.#}%  ·  {SiteLayout.EstacionamientoAutos.Count} autos  ·  {SiteLayout.Muelles.Count} muelles ({SiteLayout.CaraDeMuelles.ToString().ToLowerInvariant()})  ·  patio {SiteLayout.Metricas.ProfundidadPatioM:0.#} m  ·  nave en ({SiteLayout.Nave.X:0.##}, {SiteLayout.Nave.Y:0.##}) m · rotación {SiteLayout.NaveRotacionGrados}°";
+
+    /// <summary>Actualiza la posición de la nave desde la vista de sitio (arrastre) y re-suelve en vivo.</summary>
+    public void SetImplantacion(double x, double y)
+    {
+        _loading = true;
+        Fields["implX"].Value = x.ToString("0.##", CultureInfo.InvariantCulture);
+        Fields["implY"].Value = y.ToString("0.##", CultureInfo.InvariantCulture);
+        _loading = false;
+        IsDirty = true;
+        Generate();
+    }
+
+    /// <summary>Rota la nave 90° desde la vista de sitio (doble clic o botón).</summary>
+    public void RotarNave()
+    {
+        var actual = int.TryParse(Fields["implRot"].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out var r) ? r : 0;
+        _loading = true;
+        Fields["implRot"].Value = ((actual + 90) % 360).ToString(CultureInfo.InvariantCulture);
+        _loading = false;
+        IsDirty = true;
+        Generate();
+    }
     private bool _loading;
     private readonly string _rulesDirectory;
 
@@ -70,7 +94,12 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
             new("05 / Logística de sitio", "Simulación de implantación: dejá vacío para usar los valores por defecto.", [
                 new("retiroFrente", "Retiro al frente (autos)", "m"), new("retiroFondo", "Retiro de fondo", "m"),
                 new("retiroLateral", "Retiro lateral (acceso pesado)", "m"),
-                new("autosCantidad", "Cantidad de autos"), new("camionesCantidad", "Cantidad de muelles")])
+                new("autosCantidad", "Cantidad de autos"), new("camionesCantidad", "Cantidad de muelles")]),
+            new("06 / Implantación", "Posición de la nave en el lote. También podés arrastrarla y rotarla en la vista de sitio.", [
+                new("implX", "Posición X desde la izquierda", "m"), new("implY", "Posición Y desde el frente", "m"),
+                new("implRot", "Rotación (0, 90, 180, 270)", "°"), new("muellesEn", "Cara de muelles (auto, frente, fondo, izquierda, derecha)"),
+                new("anguloAutos", "Ángulo de estacionamiento (45, 60, 90)", "°"),
+                new("patioM", "Patio de maniobra pesada", "m"), new("calleM", "Ancho de calle pesada", "m")])
         ];
         Fields = Groups.SelectMany(g => g.Fields).ToDictionary(f => f.Key);
         foreach (var field in Fields.Values) field.PropertyChanged += FieldChanged;
@@ -100,6 +129,10 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
         Set("retiroFrente", input.Logistica.RetiroFrenteM); Set("retiroFondo", input.Logistica.RetiroFondoM);
         Set("retiroLateral", input.Logistica.RetiroLateralM); Set("autosCantidad", input.Logistica.AutosCantidad);
         Set("camionesCantidad", input.Logistica.CamionesCantidad);
+        Set("implX", input.Implantacion.XM); Set("implY", input.Implantacion.YM);
+        Set("implRot", input.Implantacion.RotacionGrados); Set("muellesEn", input.Logistica.MuellesEn);
+        Set("anguloAutos", input.Logistica.AnguloEstacionamiento);
+        Set("patioM", input.Logistica.ProfundidadPatioM); Set("calleM", input.Logistica.AnchoCallePesadaM);
         CurrentPath = path;
         IsDirty = false;
         _loading = false;
@@ -147,6 +180,14 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
                 RetiroFrenteM = NumberOrNull("retiroFrente"), RetiroFondoM = NumberOrNull("retiroFondo"),
                 RetiroLateralM = NumberOrNull("retiroLateral"), AutosCantidad = IntOrNull("autosCantidad"),
                 CamionesCantidad = IntOrNull("camionesCantidad"),
+                AnguloEstacionamiento = IntOrNull("anguloAutos"), ProfundidadPatioM = NumberOrNull("patioM"),
+                AnchoCallePesadaM = NumberOrNull("calleM"),
+                MuellesEn = string.IsNullOrWhiteSpace(Text("muellesEn")) ? null : Text("muellesEn"),
+            },
+            Implantacion = new()
+            {
+                XM = NumberOrNull("implX"), YM = NumberOrNull("implY"),
+                RotacionGrados = IntOrNull("implRot") ?? 0,
             }
         };
         if (errors.Count != 0) throw new ProjectInputValidationException(errors);

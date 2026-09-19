@@ -38,16 +38,21 @@ public class SiteLayoutGeneratorTests
     }
 
     [Fact]
-    public void Generate_GeneraEstacionamientoDentroDeLaFranjaFrontalSinSuperponerLaNave()
+    public void Generate_GeneraEstacionamientoEnZonasLibresSinSuperponerLaNave()
     {
         var site = GenerarConDefaults(EjemploDelDocumento());
 
         Assert.NotEmpty(site.EstacionamientoAutos);
-        Assert.All(site.EstacionamientoAutos, espacio =>
+        Assert.All(site.EstacionamientoAutos, plaza =>
         {
-            Assert.True(espacio.X >= site.Nave.X - 0.0001 || espacio.X + espacio.Ancho <= site.Nave.X + 0.0001 || espacio.Y + espacio.Profundidad <= site.Nave.Y + 0.0001);
-            Assert.True(espacio.Y + espacio.Profundidad <= site.Nave.Y + 0.0001, "El estacionamiento no debe invadir la franja de la nave.");
-            Assert.True(espacio.X >= 0 && espacio.X + espacio.Ancho <= site.LoteFrenteM + 0.0001);
+            var sinSuperposicion =
+                plaza.X + plaza.Ancho <= site.Nave.X + 0.0001 ||
+                plaza.X >= site.Nave.X + site.Nave.Ancho - 0.0001 ||
+                plaza.Y + plaza.Profundidad <= site.Nave.Y + 0.0001 ||
+                plaza.Y >= site.Nave.Y + site.Nave.Profundidad - 0.0001;
+            Assert.True(sinSuperposicion, "La plaza no debe superponerse con la nave.");
+            Assert.True(plaza.X >= -0.0001 && plaza.X + plaza.Ancho <= site.LoteFrenteM + 0.0001);
+            Assert.True(plaza.Y >= -0.0001 && plaza.Y + plaza.Profundidad <= site.LoteFondoM + 0.0001);
         });
     }
 
@@ -127,5 +132,156 @@ public class SiteLayoutGeneratorTests
         Assert.Equal(11, site.EjesEstructuralesM.Count); // 60 / 6 + 1
         Assert.Equal(0.0, site.EjesEstructuralesM[0]);
         Assert.Equal(60.0, site.EjesEstructuralesM[^1]);
+    }
+
+    [Fact]
+    public void Generate_ConImplantacionExplicita_RespetaLaPosicion()
+    {
+        var input = EjemploDelDocumento();
+        input.Implantacion = new ImplantacionInput { XM = 7.5, YM = 12 };
+
+        var site = GenerarConDefaults(input);
+
+        Assert.Equal(7.5, site.Nave.X);
+        Assert.Equal(12, site.Nave.Y);
+        Assert.Equal(0, site.NaveRotacionGrados);
+    }
+
+    [Fact]
+    public void Generate_ConRotacion90_ElLargoQuedaParaleloAlFrente()
+    {
+        var input = EjemploDelDocumento();
+        input.Lote = new LoteInput { Frente = 100, Fondo = 45, Zona = "industrial-2" };
+        input.Implantacion = new ImplantacionInput { RotacionGrados = 90 };
+
+        var site = GenerarConDefaults(input);
+
+        Assert.Equal(60, site.Nave.Ancho);
+        Assert.Equal(25, site.Nave.Profundidad);
+        Assert.Equal(90, site.NaveRotacionGrados);
+    }
+
+    [Fact]
+    public void Generate_CaraDeMuellesAuto_EligeElLadoConMasProfundidadLibre()
+    {
+        var input = EjemploDelDocumento();
+        // Nave pegada al fondo (ocupa y 15..75): el mayor espacio libre queda hacia el frente.
+        input.Implantacion = new ImplantacionInput { XM = 4.5, YM = 15 };
+        input.Lote = new LoteInput { Frente = 40, Fondo = 75, Zona = "industrial-2" };
+
+        var site = GenerarConDefaults(input);
+
+        Assert.Equal(CaraMuelles.Frente, site.CaraDeMuelles);
+        Assert.All(site.Muelles, m => Assert.Equal(site.Nave.Y, m.Y));
+    }
+
+    [Fact]
+    public void Generate_MuellesEnFondo_PorDefectoConElEjemploDelDocumento()
+    {
+        var site = GenerarConDefaults(EjemploDelDocumento());
+
+        Assert.Equal(CaraMuelles.Fondo, site.CaraDeMuelles);
+        Assert.All(site.Muelles, m => Assert.Equal(site.Nave.Y + site.Nave.Profundidad, m.Y));
+    }
+
+    [Fact]
+    public void Generate_MuellesEnOverride_RespetaLaCaraPedida()
+    {
+        var input = EjemploDelDocumento();
+        input.Logistica.MuellesEn = "frente";
+
+        var site = GenerarConDefaults(input);
+
+        Assert.Equal(CaraMuelles.Frente, site.CaraDeMuelles);
+        Assert.All(site.Muelles, m => Assert.Equal(site.Nave.Y, m.Y));
+    }
+
+    [Fact]
+    public void Generate_ConAngulo45_EntranMenosPlazasPorHileraQueEn90()
+    {
+        var input90 = EjemploDelDocumento();
+        var input45 = EjemploDelDocumento();
+        input45.Logistica.AnguloEstacionamiento = 45;
+
+        var site90 = GenerarConDefaults(input90);
+        var site45 = GenerarConDefaults(input45);
+
+        Assert.True(site45.EstacionamientoAutos.Count < site90.EstacionamientoAutos.Count,
+            $"45° ({site45.EstacionamientoAutos.Count}) debería dar menos plazas que 90° ({site90.EstacionamientoAutos.Count}) en el mismo lote.");
+        Assert.All(site45.EstacionamientoAutos, p => Assert.Equal(45, p.Angulo));
+    }
+
+    [Fact]
+    public void Generate_CalculaMetricasDeTabulacion()
+    {
+        var site = GenerarConDefaults(EjemploDelDocumento());
+
+        Assert.Equal(46.875, site.Metricas.CoberturaPct, precision: 3); // 25×60 / 40×80
+        Assert.Equal(site.EstacionamientoAutos.Count, site.Metricas.AutosColocados);
+        Assert.Equal(site.Muelles.Count, site.Metricas.MuellesColocados);
+        Assert.Equal(12.0, site.Metricas.ProfundidadPatioM, precision: 3); // 80 - (8+60)
+        Assert.True(site.Metricas.SuperficieEstacionamientoM2 > 0);
+    }
+
+    [Fact]
+    public void Generate_PatioConEspacioSuficiente_NoAdvierteProfundidad()
+    {
+        var input = EjemploDelDocumento();
+        input.Lote = new LoteInput { Frente = 40, Fondo = 120, Zona = "industrial-2" };
+        input.Nave = new NaveInput { Largo = 60, Ancho = 25, AlturaLibre = 8 };
+
+        var site = GenerarConDefaults(input);
+
+        Assert.Equal(35.0, site.Metricas.ProfundidadPatioM, precision: 3); // objetivo default, hay 49 libres
+        Assert.DoesNotContain(site.Advertencias, a => a.Contains("patio de maniobra"));
+    }
+
+    [Fact]
+    public void Validate_RechazaRotacionInvalida()
+    {
+        var input = EjemploDelDocumento();
+        input.Implantacion = new ImplantacionInput { RotacionGrados = 45 };
+
+        var ex = Assert.Throws<ProjectInputValidationException>(() => ProjectInputLoader.Validate(input));
+        Assert.Contains(ex.Errors, e => e.Contains("rotacion_grados"));
+    }
+
+    [Fact]
+    public void Validate_RechazaImplantacionFueraDelLote()
+    {
+        var input = EjemploDelDocumento();
+        input.Implantacion = new ImplantacionInput { XM = 20, YM = 12 }; // 20 + 25 > 40 de frente
+
+        var ex = Assert.Throws<ProjectInputValidationException>(() => ProjectInputLoader.Validate(input));
+        Assert.Contains(ex.Errors, e => e.Contains("implantacion.x_m"));
+    }
+
+    [Fact]
+    public void Validate_RechazaAnguloDeEstacionamientoInvalido()
+    {
+        var input = EjemploDelDocumento();
+        input.Logistica.AnguloEstacionamiento = 30;
+
+        var ex = Assert.Throws<ProjectInputValidationException>(() => ProjectInputLoader.Validate(input));
+        Assert.Contains(ex.Errors, e => e.Contains("angulo_estacionamiento"));
+    }
+
+    [Fact]
+    public void Yaml_ImplantacionSobreviveElRoundTrip()
+    {
+        var input = EjemploDelDocumento();
+        input.Implantacion = new ImplantacionInput { XM = 7.5, YM = 12, RotacionGrados = 90 };
+        input.Lote = new LoteInput { Frente = 100, Fondo = 45, Zona = "industrial-2" };
+        input.Logistica.AnguloEstacionamiento = 60;
+        input.Logistica.MuellesEn = "fondo";
+
+        var yaml = ProjectInputWriter.ToYaml(input);
+        var leido = ProjectInputLoader.LoadFromYaml(yaml);
+
+        Assert.Equal(7.5, leido.Implantacion.XM);
+        Assert.Equal(12, leido.Implantacion.YM);
+        Assert.Equal(90, leido.Implantacion.RotacionGrados);
+        Assert.Equal(60, leido.Logistica.AnguloEstacionamiento);
+        Assert.Equal("fondo", leido.Logistica.MuellesEn);
     }
 }

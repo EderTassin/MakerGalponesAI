@@ -21,6 +21,31 @@ public sealed class ProjectInput
     /// prefactibilidad, no un plano de sitio normativo (ver SIT-01/SIT-02 en PLAN-DE-TRABAJO.md).
     /// </summary>
     public LogisticaInput Logistica { get; set; } = new();
+
+    /// <summary>
+    /// Posición y orientación de la nave dentro del lote, elegidas en la vista de sitio del
+    /// desktop. Alimentan la simulación de sitio y, a futuro, el posicionamiento en Revit.
+    /// </summary>
+    public ImplantacionInput Implantacion { get; set; } = new();
+}
+
+/// <summary>
+/// Ubicación de la nave en el lote. Origen (0,0) en la esquina frente-izquierda del lote;
+/// X hacia la derecha del frente, Y hacia el fondo. Si x/y faltan, el solver ubica la nave
+/// automáticamente contra los retiros. La rotación es respecto del eje Y (0 = largo a lo
+/// largo del fondo del lote).
+/// </summary>
+public sealed class ImplantacionInput
+{
+    [YamlMember(Alias = "x_m", ApplyNamingConventions = false)]
+    public double? XM { get; set; }
+
+    [YamlMember(Alias = "y_m", ApplyNamingConventions = false)]
+    public double? YM { get; set; }
+
+    /// <summary>0, 90, 180 o 270. Con 90/270 el largo de la nave queda paralelo al frente.</summary>
+    [YamlMember(Alias = "rotacion_grados", ApplyNamingConventions = false)]
+    public int RotacionGrados { get; set; }
 }
 
 public sealed class LoteInput
@@ -92,6 +117,15 @@ public sealed class LogisticaInput
     /// <summary>Margen mínimo a cada lado de la nave; el lado izquierdo se reserva como corredor de acceso pesado.</summary>
     public const double RetiroLateralDefaultM = 4.5;
 
+    /// <summary>Profundidad del patio de maniobra pesada. Semirremolque argentino (≤18,6 m): mínimo operativo ~30 m, recomendado ≥35 m (referencias: guías US 120 ft ≈ 37 m, Europa 35–50 m).</summary>
+    public const double ProfundidadPatioDefaultM = 35.0;
+
+    /// <summary>Ancho de la calle de acceso pesado (doble sentido): 24 ft ≈ 7,3 m.</summary>
+    public const double AnchoCallePesadaDefaultM = 7.3;
+
+    /// <summary>Ángulo de estacionamiento por defecto: 90° (plaza 2,5×5,0 m, pasillo 6,0 m).</summary>
+    public const int AnguloEstacionamientoDefault = 90;
+
     [YamlMember(Alias = "retiro_frente_m", ApplyNamingConventions = false)]
     public double? RetiroFrenteM { get; set; }
 
@@ -101,11 +135,27 @@ public sealed class LogisticaInput
     [YamlMember(Alias = "retiro_lateral_m", ApplyNamingConventions = false)]
     public double? RetiroLateralM { get; set; }
 
-    /// <summary>Cantidad de espacios de auto a generar. Si falta, se completa la franja frontal disponible.</summary>
+    /// <summary>Cantidad de espacios de auto a generar. Si falta, el solver maximiza las zonas libres.</summary>
     [YamlMember(Alias = "autos_cantidad", ApplyNamingConventions = false)]
     public int? AutosCantidad { get; set; }
 
-    /// <summary>Cantidad de muelles de carga a generar. Si falta, se completa el paño de fondo de la nave.</summary>
+    /// <summary>Cantidad de muelles de carga a generar. Si falta, se completa la cara de muelles de la nave.</summary>
     [YamlMember(Alias = "camiones_cantidad", ApplyNamingConventions = false)]
     public int? CamionesCantidad { get; set; }
+
+    /// <summary>Ángulo de las plazas de auto: 45, 60 o 90 grados. A 45/60 el pasillo es de un solo sentido.</summary>
+    [YamlMember(Alias = "angulo_estacionamiento", ApplyNamingConventions = false)]
+    public int? AnguloEstacionamiento { get; set; }
+
+    /// <summary>Profundidad objetivo del patio de maniobra pesada (truck court), en metros.</summary>
+    [YamlMember(Alias = "profundidad_patio_m", ApplyNamingConventions = false)]
+    public double? ProfundidadPatioM { get; set; }
+
+    /// <summary>Ancho de la calle de acceso/circulación pesada, en metros.</summary>
+    [YamlMember(Alias = "ancho_calle_pesada_m", ApplyNamingConventions = false)]
+    public double? AnchoCallePesadaM { get; set; }
+
+    /// <summary>Cara de la nave con muelles: auto (la de mayor profundidad libre), frente, fondo, izquierda, derecha.</summary>
+    [YamlMember(Alias = "muelles_en", ApplyNamingConventions = false)]
+    public string? MuellesEn { get; set; }
 }

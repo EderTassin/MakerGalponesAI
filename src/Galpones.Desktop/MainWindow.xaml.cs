@@ -18,6 +18,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = Editor;
+        SitePreviewControl.PlacementChanged += (x, y) => Editor.SetImplantacion(x, y);
+        SitePreviewControl.RotateRequested += () => Editor.RotarNave();
     }
 
     private void Design_Click(object sender, RoutedEventArgs e) => WorkspaceTabs.SelectedIndex = 0;
@@ -38,11 +40,14 @@ public partial class MainWindow : Window
         var isSite = SiteButton?.IsChecked == true;
         Preview.Visibility = isSite ? Visibility.Collapsed : Visibility.Visible;
         SitePreviewControl.Visibility = isSite ? Visibility.Visible : Visibility.Collapsed;
+        RotateSiteButton.Visibility = isSite ? Visibility.Visible : Visibility.Collapsed;
         StructureDescription.Visibility = isSite ? Visibility.Collapsed : Visibility.Visible;
         SiteDescription.Visibility = isSite ? Visibility.Visible : Visibility.Collapsed;
         StructureCaption.Visibility = isSite ? Visibility.Collapsed : Visibility.Visible;
         SiteCaption.Visibility = isSite ? Visibility.Visible : Visibility.Collapsed;
     }
+
+    private void RotateSite_Click(object sender, RoutedEventArgs e) => Editor.RotarNave();
 
     private void New_Click(object sender, RoutedEventArgs e)
     {
