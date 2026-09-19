@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <None Include="..\..\samples\proyecto-ejemplo.yaml" Link="Samples\proyecto-ejemplo.yaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\reglas\cordoba-capital\zonificacion.yaml" Link="Reglas\cordoba-capital\zonificacion.yaml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

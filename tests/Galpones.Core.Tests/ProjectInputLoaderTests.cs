@@ -4,6 +4,27 @@ namespace Galpones.Core.Tests;
 
 public class ProjectInputLoaderTests
 {
+    [Theory]
+    [InlineData("pendiente_cubierta_pct: 0")]
+    [InlineData("pendiente_cubierta_pct: -5")]
+    [InlineData("pendiente_cubierta_pct: 150")]
+    public void LoadFromYaml_RechazaPendienteDeCubiertaInvalida(string pendiente)
+    {
+        var yaml = $$"""
+            tipologia: nave_deposito
+            jurisdiccion: cordoba-capital
+            lote: { frente: 40, fondo: 80, zona: "industrial-2" }
+            nave: { largo: 60, ancho: 25, altura_libre: 8 }
+            estructura: { tipo: porticos_metalicos, modulacion: 6, {{pendiente}} }
+            piso: { sobrecarga_kN_m2: 30 }
+            electrico: { potencia_kVA: 150, tension: trifasica }
+            """;
+
+        var ex = Assert.Throws<ProjectInputValidationException>(() => ProjectInputLoader.LoadFromYaml(yaml));
+
+        Assert.Contains(ex.Errors, e => e.Contains("pendiente_cubierta_pct"));
+    }
+
     [Fact]
     public void LoadFromFile_ParseaElEjemploDelDocumento()
     {
@@ -21,6 +42,7 @@ public class ProjectInputLoaderTests
         Assert.Equal(8, input.Nave.AlturaLibre);
         Assert.Equal("porticos_metalicos", input.Estructura.Tipo);
         Assert.Equal(6, input.Estructura.Modulacion);
+        Assert.Equal(10, input.Estructura.PendienteCubiertaPct);
         Assert.Equal(30, input.Piso.SobrecargaKnM2);
         Assert.Equal(150, input.Electrico.PotenciaKva);
         Assert.Equal("trifasica", input.Electrico.Tension);

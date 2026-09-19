@@ -20,6 +20,12 @@ public sealed class LoteInput
 {
     public double Frente { get; set; }
     public double Fondo { get; set; }
+
+    /// <summary>
+    /// Código de zona según el Plano de Zonificación General vigente para el lote puntual
+    /// (se consulta en el mapa de IDECOR, no es una etiqueta libre). Se valida contra
+    /// reglas/&lt;jurisdiccion&gt;/zonificacion.yaml — ver Galpones.Core.Rules.
+    /// </summary>
     public string Zona { get; set; } = string.Empty;
 }
 
@@ -28,7 +34,7 @@ public sealed class NaveInput
     public double Largo { get; set; }
     public double Ancho { get; set; }
 
-    [YamlMember(Alias = "altura_libre")]
+    [YamlMember(Alias = "altura_libre", ApplyNamingConventions = false)]
     public double AlturaLibre { get; set; }
 }
 
@@ -36,6 +42,18 @@ public sealed class EstructuraInput
 {
     public string Tipo { get; set; } = string.Empty;
     public double Modulacion { get; set; }
+
+    /// <summary>Pendiente de cubierta en %. Opcional: si falta, el generador aplica su default.</summary>
+    [YamlMember(Alias = "pendiente_cubierta_pct", ApplyNamingConventions = false)]
+    public double? PendienteCubiertaPct { get; set; }
+
+    /// <summary>Nombre de tipo de columna preferido en el documento Revit (opcional).</summary>
+    [YamlMember(Alias = "perfil_columna", ApplyNamingConventions = false)]
+    public string? PerfilColumna { get; set; }
+
+    /// <summary>Nombre de tipo de viga preferido en el documento Revit (opcional).</summary>
+    [YamlMember(Alias = "perfil_viga", ApplyNamingConventions = false)]
+    public string? PerfilViga { get; set; }
 }
 
 public sealed class PisoInput

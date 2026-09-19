@@ -13,13 +13,17 @@ public sealed class App : IExternalApplication
         var panel = application.CreateRibbonPanel(TabName, "Generador");
 
         var assemblyPath = Assembly.GetExecutingAssembly().Location;
-        var buttonData = new PushButtonData(
+        panel.AddItem(new PushButtonData(
+            "ImportarFamilias",
+            "Importar\nfamilias",
+            assemblyPath,
+            typeof(Commands.ImportarFamiliasCommand).FullName));
+
+        panel.AddItem(new PushButtonData(
             "GenerarGalpon",
             "Generar\ngalpón",
             assemblyPath,
-            typeof(Commands.GenerarGalponCommand).FullName);
-
-        panel.AddItem(buttonData);
+            typeof(Commands.GenerarGalponCommand).FullName));
 
         return Result.Succeeded;
     }

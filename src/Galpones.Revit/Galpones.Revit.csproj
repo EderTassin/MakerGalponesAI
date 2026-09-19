@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -9,11 +9,20 @@
     <UseWPF>true</UseWPF>
     <!-- Revit carga las DLLs de referencia en runtime; no hace falta copiarlas -->
     <GenerateDependencyFile>false</GenerateDependencyFile>
+    <!-- Los proyectos de biblioteca no copian DLLs de paquetes NuGet al output por default;
+         el add-in necesita YamlDotNet.dll junto a las DLLs del plugin. -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup>
     <!-- Carpeta de instalación de Revit. Ajustar si se usa otra versión (2024, 2026, etc). -->
-    <RevitInstallDir>C:\Program Files\Autodesk\Revit 2025</RevitInstallDir>
+    <RevitInstallDir Condition="'$(RevitInstallDir)' == ''">C:\Program Files\Autodesk\Revit 2025</RevitInstallDir>
+    <RevitVersion Condition="'$(RevitVersion)' == ''">2025</RevitVersion>
+    <DeployRevitAddin Condition="'$(DeployRevitAddin)' == ''">false</DeployRevitAddin>
+    <RevitAddinsDir>$(APPDATA)\Autodesk\Revit\Addins\$(RevitVersion)</RevitAddinsDir>
+    <!-- MSB3277: conflicto benigno de Microsoft.VisualBasic (ref pack .NET 8 vs DLLs de Revit);
+         en runtime Revit carga sus propias DLLs. -->
+    <MSBuildWarningsAsMessages>MSB3277</MSBuildWarningsAsMessages>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,5 +45,28 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <!-- Instalación explícita: compilar con -p:DeployRevitAddin=true y Revit cerrado. -->
+  <Target Name="DeployAddin" AfterTargets="Build" Condition="'$(DeployRevitAddin)' == 'true'">
+    <MakeDir Directories="$(RevitAddinsDir)\Galpones" />
+    <Copy SourceFiles="$(OutDir)Galpones.Revit.dll;$(OutDir)Galpones.Revit.pdb;$(OutDir)Galpones.Core.dll;$(OutDir)Galpones.Core.pdb;$(OutDir)YamlDotNet.dll"
+          DestinationFolder="$(RevitAddinsDir)\Galpones"
+          SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <AddinLine Include="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;" />
+      <AddinLine Include="&lt;RevitAddIns&gt;" />
+      <AddinLine Include="  &lt;AddIn Type=&quot;Application&quot;&gt;" />
+      <AddinLine Include="    &lt;Name&gt;Galpones - Generador&lt;/Name&gt;" />
+      <AddinLine Include="    &lt;Assembly&gt;$(RevitAddinsDir)\Galpones\Galpones.Revit.dll&lt;/Assembly&gt;" />
+      <AddinLine Include="    &lt;AddInId&gt;7E6C6B7A-6C2E-4C5A-9B0A-1F2D3E4A5B6C&lt;/AddInId&gt;" />
+      <AddinLine Include="    &lt;FullClassName&gt;Galpones.Revit.App&lt;/FullClassName&gt;" />
+      <AddinLine Include="    &lt;VendorId&gt;GAL&lt;/VendorId&gt;" />
+      <AddinLine Include="    &lt;VendorDescription&gt;Galpones Revit Plugin&lt;/VendorDescription&gt;" />
+      <AddinLine Include="  &lt;/AddIn&gt;" />
+      <AddinLine Include="&lt;/RevitAddIns&gt;" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(RevitAddinsDir)\GalponesRevit.addin" Lines="@(AddinLine)" Overwrite="true" />
+    <Message Importance="High" Text="Galpones add-in desplegado en $(RevitAddinsDir)" />
+  </Target>
 
 </Project>

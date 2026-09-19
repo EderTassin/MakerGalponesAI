@@ -1,0 +1,3 @@
+# Carpeta de familias del proyecto de ejemplo.
+# Los arquitectos copian acá los .rfa (columnas, vigas, portones, etc.)
+# y el plugin los importa con "Importar familias" o desde la ventana de Generar.

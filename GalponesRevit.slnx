@@ -1,9 +1,11 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Galpones.Core/Galpones.Core.csproj" />
+    <Project Path="src/Galpones.Desktop/Galpones.Desktop.csproj" />
     <Project Path="src/Galpones.Revit/Galpones.Revit.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Galpones.Core.Tests/Galpones.Core.Tests.csproj" />
+    <Project Path="tests/Galpones.Desktop.SmokeTests/Galpones.Desktop.SmokeTests.csproj" />
   </Folder>
 </Solution>

@@ -1,0 +1,317 @@
+# Pack de reglas de zonificación — Córdoba Capital.
+#
+# Fuente: Municipalidad de Córdoba, Ordenanza N° 8256/86 "Ocupación del Suelo dentro del
+# Ejido Municipal" (texto ordenado, con modificatorias hasta Ord. 11.201/07).
+# https://servicios2.cordoba.gov.ar/docs/obrasprivadas/Ord%208256textoOrde.pdf
+#
+# IMPORTANTE (ver plugin-revit-galpones.md, sección 3):
+# - Esto NO reemplaza la revisión de un arquitecto matriculado. Es un borrador de
+#   traducción normativa → reglas estructuradas, pendiente de aprobación.
+# - El código de zona ("K", "I", etc.) es el que figura en el Plano de Zonificación
+#   General vigente para el lote puntual (se consulta en el mapa de IDECOR), NO es una
+#   etiqueta libre. La letra no es intuitiva: p. ej. la "Zona I" es residencial (máxima
+#   restricción a industria), mientras que K, L, M y N son las zonas efectivamente
+#   industriales.
+# - Todavía NO incluye la superposición con Ordenanza 8133/85 (Uso del Suelo / "Patrón"
+#   de actividad económica por nivel de molestia), que determina si una actividad puntual
+#   está permitida en la zona y en ciertos casos bonifica el F.O.S. (ver Art. 36 bis, 41 y
+#   41 bis de la 8256/86, que remiten a los Patrones IIc/IIIa/IIIb/IIIc de la 8133/85).
+# - Tampoco incluye Ordenanza 8060/85 (mínimos de fraccionamiento del lote) ni el Art. 9°
+#   de esta misma ordenanza (retiro de frente general, al que remiten varias zonas y que
+#   todavía no se digitalizó).
+# - Los retiros NO se modelan como un número único: casi siempre son condicionales (según
+#   frente del lote y/o altura de la edificación), así que se dejan como texto descriptivo
+#   con la referencia al artículo, no como valor calculable.
+# - Zona K: la ordenanza fija DOS regímenes distintos en el mismo artículo (64°) — uno
+#   general (F.O.S. 60%, F.O.T. 1, altura 10,50 m, pensado para vivienda) y otro específico
+#   para "Usos del Suelo Industrial o Asimilables" (F.O.S. por tramo de frente, F.O.T. 1,50,
+#   sin límite de altura). Para la tipología nave_deposito del piloto corresponde el
+#   régimen industrial — es el que está cargado acá. Ojo si en el futuro se agrega la
+#   variante residencial de zona K: son números distintos.
+# - Zona N1: la ordenanza tiene una inconsistencia propia entre el número y su lectura en
+#   palabras para el F.O.T. ("0,70 (cero con treinta)"). Se dejó el valor numérico (0.70)
+#   con una advertencia; hay que confirmarlo contra el texto oficial antes de usarlo.
+# - Zona Z: la referencia de artículo en el texto compilado está duplicada con la de Zona W
+#   (ambas citan "Art. 24°"), probablemente un error de compilación del texto ordenado.
+#   Confirmar el número de artículo real antes de usarla para validar un proyecto.
+
+zonas:
+  - zona: A
+    caracter: >-
+      Zona ligada al área central, candidata a renovación con alta densificación
+      poblacional. Vivienda colectiva y servicios. Máxima restricción a industria.
+    fos_max: 0.80
+    fot_max: null
+    altura_max_m: 10.50 # sobre línea; con retiro de 12 m del eje de calle puede llegar a 21 m
+    retiros: "Edificación obligatoria sobre Línea Municipal en fachada de frente. Sobre 10,50 m: retiro de 12 m desde eje de calle, luego puede elevarse hasta 21 m (plano límite 45°)."
+    articulo: "Ordenanza 8256/86, Art. 46° (mod. Ord. 10.740/04 art. 22)"
+
+  - zona: B
+    caracter: >-
+      Zona de conformación lineal, candidata a renovación con usos mixtos: servicios y
+      vivienda colectiva de alta densidad. Máxima restricción a industria.
+    fos_max: 0.80
+    fot_max: null
+    altura_max_m: 21.0 # entre medianeras; en perímetro libre el máximo es 36 m
+    retiros: "Edificación obligatoria sobre Línea Municipal. Entre medianeras: altura máx. 21 m + plano límite 45°. Perímetro libre: altura máx. 36 m, parapetos retirados 1/5 de la altura de las medianeras."
+    articulo: "Ordenanza 8256/86, Art. 47° (mod. Ord. 10.740/04 art. 23)"
+
+  - zona: C1
+    caracter: >-
+      Zona de conformación lineal, candidata a renovación con densificación poblacional.
+      Vivienda colectiva y servicios. Máxima restricción a industria.
+    fos_max: 0.80
+    fot_max: null
+    altura_max_m: 12.0 # luego plano límite 45° hasta un límite horizontal de 21 m
+    retiros: "Retiro de Línea de Edificación optativo (sobre línea o con mayores retiros). Altura de fachada de frente 12 m, plano límite 45° hasta 21 m para el resto de la parcela."
+    articulo: "Ordenanza 8256/86, Art. 48°"
+
+  - zona: C2
+    caracter: >-
+      Zona de conformación lineal en torno a plaza, candidata a renovación con usos
+      mixtos y vivienda colectiva de alta densidad. Máxima restricción a industria.
+    fos_max: 0.80
+    fot_max: null
+    altura_max_m: 21.0
+    retiros: "Edificación obligatoria (total o parcial) sobre Línea de Edificación vigente. Altura uniforme de 21 m en toda la parcela."
+    articulo: "Ordenanza 8256/86, Art. 49° (mod. Ord. 10.740/04 art. 26)"
+
+  - zona: C4
+    caracter: >-
+      Zona de conformación lineal, candidata a renovación con densificación poblacional
+      relativa. Vivienda colectiva y servicios. Máxima restricción a industria.
+    fos_max: 0.80
+    fot_max: null
+    altura_max_m: 18.0
+    retiros: "Edificación obligatoria sobre Línea Municipal en fachada de frente. Altura uniforme de 18 m en toda la parcela."
+    articulo: "Ordenanza 8256/86, Zona C4 (incorporada por Ord. 10.740/04 art. 27)"
+
+  - zona: D
+    caracter: >-
+      Zona candidata a renovación con densificación poblacional relativa. Vivienda
+      individual y colectiva, servicios. Restricciones medias a industria.
+    fos_max: 0.70
+    fot_max: 2.0
+    altura_max_m: 12.0 # luego plano límite 45°
+    retiros: "Retiro de Línea de Edificación optativo. Altura 12 m, plano límite 45° por encima."
+    articulo: "Ordenanza 8256/86, Art. 50°"
+
+  - zona: E
+    caracter: >-
+      Zona candidata a renovación con densificación poblacional relativa. Vivienda
+      individual y colectiva, servicios. Restricciones media y mínima a industria.
+    fos_max: 0.70
+    fot_max: 2.0
+    altura_max_m: 8.0 # con retiro de 12 m del eje de calle puede llegar a 12 m
+    retiros: "Retiro de Línea de Edificación optativo. Altura de fachada 8 m; con retiro mínimo de 12 m desde eje de calle puede elevarse hasta 12 m."
+    articulo: "Ordenanza 8256/86, Art. 51°"
+
+  - zona: F1
+    caracter: >-
+      Zona periférica de uso residencial de baja densidad (vivienda individual y/o
+      agrupada). Máximas restricciones a industria.
+    fos_max: 0.60
+    fot_max: 1.0
+    altura_max_m: 10.50
+    retiros: "De frente: según Art. 9° (no digitalizado). Lotes con frente > 18 m: retiro lateral de 1/3 de la altura, mínimo 3 m."
+    articulo: "Ordenanza 8256/86, Art. 52° (mod. Ord. 11.201/07 art. 1)"
+
+  - zona: F2
+    caracter: >-
+      Zona periférica de uso residencial de baja densidad (vivienda individual y/o
+      agrupada). Máximas restricciones a industria.
+    fos_max: 0.60
+    fot_max: 1.0
+    altura_max_m: 10.50
+    retiros: "De frente: según Art. 9° (no digitalizado)."
+    articulo: "Ordenanza 8256/86, Art. 53°"
+
+  - zona: F3
+    caracter: >-
+      Zona periférica de uso residencial de baja densidad. Restricciones máximas o
+      medias a industria según sector.
+    fos_max: 0.60
+    fot_max: 1.0
+    altura_max_m: 10.50
+    retiros: "De frente: según Art. 9° (no digitalizado)."
+    articulo: "Ordenanza 8256/86, Art. 54° (mod. Ord. 11.201/07 art. 2)"
+
+  - zona: F4
+    caracter: >-
+      Zona periférica lineal, usos mixtos (servicios + residencial de baja densidad).
+      Máximas restricciones a industria.
+    fos_max: 0.60
+    fot_max: 1.50
+    altura_max_m: 10.50
+    retiros: "De frente: según Art. 9° (no digitalizado)."
+    articulo: "Ordenanza 8256/86, Art. 55° (mod. Ord. 11.201/07 art. 3)"
+
+  - zona: G1
+    caracter: >-
+      Zona periférica de baja densidad con planes de vivienda colectiva. Restricciones
+      media y mínima a industria.
+    fos_max: 0.70 # hasta 80% si el lote no alcanza la superficie mínima de Ord. 8060/85
+    fot_max: 1.0
+    altura_max_m: 10.50
+    retiros: "De frente: según Art. 9° (no digitalizado). F.O.S. puede llegar a 80% si el lote no alcanza la superficie mínima fijada por Ord. 8060/85."
+    articulo: "Ordenanza 8256/86, Art. 56°"
+
+  - zona: G2
+    caracter: >-
+      Zona periférica de baja densidad con planes de vivienda colectiva. Restricciones
+      media y mínima a industria.
+    fos_max: 0.70 # hasta 80% si el lote no alcanza la superficie mínima de Ord. 8060/85
+    fot_max: 1.50
+    altura_max_m: 10.50
+    retiros: "De frente: según Art. 9° (no digitalizado). F.O.S. puede llegar a 80% si el lote no alcanza la superficie mínima fijada por Ord. 8060/85."
+    articulo: "Ordenanza 8256/86, Art. 57°"
+
+  - zona: G3
+    caracter: >-
+      Zona periférica lineal, usos mixtos con vivienda de baja y media densidad.
+      Restricciones media y mínima a industria.
+    fos_max: 0.70
+    fot_max: 2.0
+    altura_max_m: 12.0
+    retiros: "De frente: según Art. 9° (no digitalizado)."
+    articulo: "Ordenanza 8256/86, Art. 58°"
+
+  - zona: H1
+    caracter: >-
+      Zona periférica destinada a extender la urbanización, densidad media. Restricción
+      media a industria.
+    fos_max: 0.70
+    fot_max: 1.0
+    altura_max_m: 10.50
+    retiros: "De frente: según Art. 9° (no digitalizado)."
+    articulo: "Ordenanza 8256/86, Art. 59°"
+
+  - zona: H2
+    caracter: >-
+      Zona periférica lineal, usos mixtos con vivienda de baja y media densidad. Máximas
+      restricciones a industria.
+    fos_max: 0.70
+    fot_max: 2.0
+    altura_max_m: 12.0
+    retiros: "De frente: según Art. 9° (no digitalizado)."
+    articulo: "Ordenanza 8256/86, Art. 60°"
+
+  - zona: I
+    caracter: >-
+      OJO: pese al nombre, es zona RESIDENCIAL de densidad media (vivienda colectiva),
+      con restricción MÁXIMA al asentamiento de actividades industriales. No confundir
+      con zona industrial.
+    fos_max: 0.70
+    fot_max: 2.0
+    altura_max_m: 12.0
+    retiros: "De frente: según Art. 9° (no digitalizado). Delimitación específica en Arts. 43°, 44° y 45° (tramos sobre Av. Ejército Argentino, Av. Duarte Quirós, Av. Interfábricas y futura Av. Pueyrredón)."
+    articulo: "Ordenanza 8256/86, Art. 61°"
+
+  - zona: J1
+    caracter: >-
+      Zona de Urbanización Parque, residencial de baja densidad (solo vivienda individual
+      o individual agrupada). Máximas restricciones a industria.
+    fos_max: null
+    fot_max: null
+    altura_max_m: null
+    retiros: "Remite íntegramente a Ordenanza 6646/67 (Urbanización Parque) y su Decreto Reglamentario N° 3-G-77 — no digitalizada."
+    articulo: "Ordenanza 8256/86, Art. 62°"
+
+  - zona: J2
+    caracter: >-
+      Zona de Urbanización Parque, residencial (individual, individual agrupada y
+      colectiva). Máximas restricciones a industria.
+    fos_max: null
+    fot_max: null
+    altura_max_m: 12.0
+    retiros: "Remite a Ordenanza 6646/67 (Urbanización Parque) y su Decreto Reglamentario N° 3-G-77 — no digitalizada. Altura máxima absoluta: 12 m."
+    articulo: "Ordenanza 8256/86, Art. 63°"
+
+  - zona: K
+    caracter: >-
+      Zona de ubicación periférica destinada fundamentalmente al asentamiento de
+      actividades industriales o asimilables que producen molestias importantes al medio
+      circundante. Régimen cargado: uso industrial (Art. 64° punto 7). El mismo artículo
+      fija un régimen distinto para vivienda (F.O.S. 60%, F.O.T. 1, altura 10,50 m) que
+      no está cargado acá.
+    fos_max: null
+    fos_max_frente_menor_25m: 0.80
+    fos_max_frente_mayor_igual_25m: 0.60
+    fot_max: 1.50
+    altura_max_m: null # sin limitaciones para uso industrial
+    retiros: "Frente: 6 m. Laterales: no obligatorios si frente < 25 m; un lateral si frente 25-60 m; todos los laterales si frente > 60 m (relación d=1/3 de la altura, mínimo 6 m). Fondo: 10 m."
+    articulo: "Ordenanza 8256/86, Art. 64° (mod. Ord. 10.996/05), punto 7 'Disposiciones relativas a Usos del Suelo Industrial o Asimilables'"
+
+  - zona: L
+    caracter: >-
+      Zona periférica destinada fundamentalmente a industria o asimilables que producen
+      molestias importantes, y usos rurales. Excluye planes de vivienda; solo admite 1
+      vivienda accesoria a la actividad industrial por parcela.
+    fos_max: null
+    fos_max_frente_menor_25m: 0.80
+    fos_max_frente_mayor_igual_25m: 0.60
+    fot_max: 1.50
+    altura_max_m: null # sin limitaciones
+    retiros: "Frente: 10 m. Laterales: no obligatorios si frente < 25 m; un lateral si frente 25-60 m; todos los laterales si frente > 60 m (d=1/3 de la altura, mínimo 6 m). Fondo: 10 m."
+    articulo: "Ordenanza 8256/86, Art. 65°"
+
+  - zona: M
+    caracter: >-
+      Zona periférica destinada fundamentalmente a industria peligrosa, inflamable,
+      explosiva o sumamente nociva, y usos rurales. Vivienda prohibida salvo accesoria a
+      uso rural.
+    fos_max: 0.50
+    fot_max: 0.50
+    altura_max_m: null # sin limitaciones
+    retiros: "15 m en todos los frentes y linderos. Las disposiciones pueden variarse por reglamentación fundada en estudios particularizados de seguridad."
+    articulo: "Ordenanza 8256/86, Art. 66°"
+
+  - zona: N
+    caracter: >-
+      Zona periférica de usos rurales y actividades industriales permitidas por normas en
+      vigencia. Vivienda individual sujeta a estricto control del número de unidades.
+    fos_max: 0.30
+    fot_max: 0.30
+    altura_max_m: null # no se fija un máximo explícito en el texto disponible
+    retiros: "Uso industrial: 20 m en todos los frentes y linderos. Vivienda rural: 6 m de frente y 4 m en linderos (3 m en un lateral si el lote no alcanza el mínimo de Ord. 8060/85)."
+    articulo: "Ordenanza 8256/86, Art. 67° (mod. Ord. 10.761/04)"
+
+  - zona: N1
+    caracter: >-
+      Zona periférica mixta rural-residencial, densidad baja, solo vivienda individual,
+      con usos rurales y actividades industriales permitidas por normas en vigencia.
+    fos_max: 0.30
+    fot_max: 0.70 # ADVERTENCIA: el texto de la ordenanza dice "0,70 (cero con treinta)" — inconsistencia entre número y su lectura; confirmar contra el original antes de usar.
+    altura_max_m: 10.50
+    retiros: "Frente: 6 m. Laterales: 3 m de ambos lados."
+    articulo: "Ordenanza 8256/86, Art. 67° bis (incorporado por Ord. 10.761/04)"
+
+  - zona: U
+    caracter: >-
+      Zona candidata a renovación con densificación poblacional relativa. Vivienda
+      individual y colectiva, servicios. Restricciones media y mínima a industria.
+    fos_max: 0.70 # puede subir a 12 m de altura si el F.O.S. baja a 60%
+    fot_max: null
+    altura_max_m: 10.50
+    retiros: "Edificación obligatoria sobre Línea Municipal. Puede llegar a 12 m de altura si se respeta un F.O.S. máximo de 60%."
+    articulo: "Ordenanza 8256/86, incorporada por Ord. 10.740/04 (texto cita 'Art. 28°', a confirmar)"
+
+  - zona: W
+    caracter: >-
+      Zona candidata a renovación con densificación poblacional relativa. Vivienda
+      individual y colectiva, servicios. Restricciones máximas a industria.
+    fos_max: 0.70
+    fot_max: null
+    altura_max_m: 10.50
+    retiros: "Edificación obligatoria sobre Línea Municipal."
+    articulo: "Ordenanza 8256/86, incorporada por Ord. 10.740/04 art. 24"
+
+  - zona: Z
+    caracter: >-
+      Zona ligada al área central, candidata a renovación con alta densificación
+      poblacional. Vivienda colectiva y servicios. Máxima restricción a industria.
+    fos_max: 0.80
+    fot_max: null
+    altura_max_m: 10.50 # con retiro de 12 m del eje de calle puede llegar a 21 m
+    retiros: "Lotes con frente >= 10 m: al menos 50% del frente sobre Línea Municipal a 10,50 m, resto espacio verde/acceso; sobre esa altura, retiro de 12 m del eje de calle para llegar a 21 m. Lotes con frente < 10 m: edificación obligatoria sobre toda la Línea Municipal."
+    articulo: "Ordenanza 8256/86, incorporada por Ord. 10.740/04 (texto cita 'Art. 24°', duplicado con Zona W — a confirmar)"
