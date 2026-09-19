@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Galpones - Generador</Name>
+    <Assembly>Galpones.Revit.dll</Assembly>
+    <AddInId>7E6C6B7A-6C2E-4C5A-9B0A-1F2D3E4A5B6C</AddInId>
+    <FullClassName>Galpones.Revit.App</FullClassName>
+    <VendorId>GAL</VendorId>
+    <VendorDescription>Galpones Revit Plugin</VendorDescription>
+  </AddIn>
+</RevitAddIns>

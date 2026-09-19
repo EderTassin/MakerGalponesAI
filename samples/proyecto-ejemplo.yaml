@@ -1,0 +1,8 @@
+# proyecto.yaml — ejemplo tomado de plugin-revit-galpones.md, sección 4.
+tipologia: nave_deposito
+jurisdiccion: cordoba-capital
+lote: { frente: 40, fondo: 80, zona: "industrial-2" }
+nave: { largo: 60, ancho: 25, altura_libre: 8 }
+estructura: { tipo: porticos_metalicos, modulacion: 6 }
+piso: { sobrecarga_kN_m2: 30 }
+electrico: { potencia_kVA: 150, tension: trifasica }
