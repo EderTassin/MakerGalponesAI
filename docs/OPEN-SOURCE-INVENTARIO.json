@@ -1,0 +1,443 @@
+{
+  "title": "MakerGalpones - open source research inventory",
+  "research_date_utc": "2026-09-19",
+  "method": "Public GitHub REST metadata plus primary project documentation and license review. No package was installed or executed. pushed_at is repository activity, not a stable release or quality rating. Missing license_review means use the reported detection as preliminary and verify the exact package before adoption.",
+  "repository_count": 32,
+  "repositories": [
+    {
+      "repository": "Nice3point/RevitToolkit",
+      "url": "https://github.com/Nice3point/RevitToolkit",
+      "metadata_source": "https://api.github.com/repos/Nice3point/RevitToolkit",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-16T16:20:43Z",
+      "default_branch": "main",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": "Toolkit for Revit plugin development"
+    },
+    {
+      "repository": "KennanChan/Revit.Async",
+      "url": "https://github.com/KennanChan/Revit.Async",
+      "metadata_source": "https://api.github.com/repos/KennanChan/Revit.Async",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2025-10-10T07:23:42Z",
+      "default_branch": "master",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": "Use task-based asynchronous pattern (TAP) to run Revit API code from any execution context."
+    },
+    {
+      "repository": "lookup-foundation/RevitLookup",
+      "url": "https://github.com/lookup-foundation/RevitLookup",
+      "metadata_source": "https://api.github.com/repos/lookup-foundation/RevitLookup",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-16T16:18:28Z",
+      "default_branch": "develop",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": "Interactive Revit database exploration tool"
+    },
+    {
+      "repository": "ricaun-io/ricaun.RevitTest",
+      "url": "https://github.com/ricaun-io/ricaun.RevitTest",
+      "metadata_source": "https://api.github.com/repos/ricaun-io/ricaun.RevitTest",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-04-13T13:51:33Z",
+      "default_branch": "master",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": "ricaun.RevitTest is a multi-version NUnit testing framework for Revit API."
+    },
+    {
+      "repository": "pyrevitlabs/pyRevit",
+      "url": "https://github.com/pyrevitlabs/pyRevit",
+      "metadata_source": "https://api.github.com/repos/pyrevitlabs/pyRevit",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T17:23:43Z",
+      "default_branch": "develop",
+      "github_license_detection": "GPL-3.0",
+      "license_review": null,
+      "description": "Rapid Application Development (RAD) Environment for Autodesk Revit®"
+    },
+    {
+      "repository": "DynamoDS/DynamoRevit",
+      "url": "https://github.com/DynamoDS/DynamoRevit",
+      "metadata_source": "https://api.github.com/repos/DynamoDS/DynamoRevit",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-15T09:54:38Z",
+      "default_branch": "master",
+      "github_license_detection": "Apache-2.0",
+      "license_review": null,
+      "description": "Dynamo Libraries for Revit"
+    },
+    {
+      "repository": "IfcOpenShell/IfcOpenShell",
+      "url": "https://github.com/IfcOpenShell/IfcOpenShell",
+      "metadata_source": "https://api.github.com/repos/IfcOpenShell/IfcOpenShell",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-19T03:08:23Z",
+      "default_branch": "v0.9.0",
+      "github_license_detection": "LGPL-3.0",
+      "license_review": {
+        "license": "Core, Python, IfcTester, IfcDiff, IfcPatch, BCF: LGPL-3.0-or-later; Bonsai and IfcSverchok: GPL-3.0-or-later; dependency exceptions noted upstream",
+        "source": "https://github.com/IfcOpenShell/IfcOpenShell"
+      },
+      "description": "Open source IFC library and geometry engine"
+    },
+    {
+      "repository": "xBimTeam/XbimEssentials",
+      "url": "https://github.com/xBimTeam/XbimEssentials",
+      "metadata_source": "https://api.github.com/repos/xBimTeam/XbimEssentials",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-08-28T08:31:48Z",
+      "default_branch": "master",
+      "github_license_detection": "NOASSERTION",
+      "license_review": {
+        "license": "CDDL; see exact text and package notices",
+        "source": "https://raw.githubusercontent.com/xBimTeam/XbimEssentials/master/LICENCE.md"
+      },
+      "description": "A .NET library to work with data in the IFC format. This is the core component of the Xbim Toolkit"
+    },
+    {
+      "repository": "helix-toolkit/helix-toolkit",
+      "url": "https://github.com/helix-toolkit/helix-toolkit",
+      "metadata_source": "https://api.github.com/repos/helix-toolkit/helix-toolkit",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-01T14:17:33Z",
+      "default_branch": "develop3",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": "Helix Toolkit is a collection of 3D components for .NET."
+    },
+    {
+      "repository": "NetTopologySuite/NetTopologySuite",
+      "url": "https://github.com/NetTopologySuite/NetTopologySuite",
+      "metadata_source": "https://api.github.com/repos/NetTopologySuite/NetTopologySuite",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T18:28:16Z",
+      "default_branch": "develop",
+      "github_license_detection": "NOASSERTION",
+      "license_review": {
+        "license": "BSD-3-Clause style project license; additional JTS and third-party notices",
+        "source": "https://raw.githubusercontent.com/NetTopologySuite/NetTopologySuite/develop/License.md"
+      },
+      "description": "A .NET GIS solution that is fast and reliable for the .NET platform."
+    },
+    {
+      "repository": "AngusJohnson/Clipper2",
+      "url": "https://github.com/AngusJohnson/Clipper2",
+      "metadata_source": "https://api.github.com/repos/AngusJohnson/Clipper2",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-04-20T01:18:06Z",
+      "default_branch": "main",
+      "github_license_detection": "BSL-1.0",
+      "license_review": {
+        "license": "Boost Software License 1.0 (BSL-1.0)",
+        "source": "https://github.com/AngusJohnson/Clipper2"
+      },
+      "description": "Polygon Clipping, Offsetting & Triangulation in  C++, C# and Delphi"
+    },
+    {
+      "repository": "google/or-tools",
+      "url": "https://github.com/google/or-tools",
+      "metadata_source": "https://api.github.com/repos/google/or-tools",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-19T00:14:10Z",
+      "default_branch": "stable",
+      "github_license_detection": "Apache-2.0",
+      "license_review": null,
+      "description": "Google's Operations Research tools:"
+    },
+    {
+      "repository": "JWock82/Pynite",
+      "url": "https://github.com/JWock82/Pynite",
+      "metadata_source": "https://api.github.com/repos/JWock82/Pynite",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-14T22:02:39Z",
+      "default_branch": "main",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": "A 3D structural engineering finite element library for Python."
+    },
+    {
+      "repository": "OpenSees/OpenSees",
+      "url": "https://github.com/OpenSees/OpenSees",
+      "metadata_source": "https://api.github.com/repos/OpenSees/OpenSees",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T15:20:36Z",
+      "default_branch": "master",
+      "github_license_detection": "NOASSERTION",
+      "license_review": {
+        "license": "Specific Regents license with restrictions on commercial incorporation/distribution; not treated as an unrestricted open-source commercial dependency",
+        "source": "https://opensees.github.io/OpenSeesDocumentation/developer/license.html"
+      },
+      "description": "OpenSees Source Code Repository"
+    },
+    {
+      "repository": "robbievanleeuwen/section-properties",
+      "url": "https://github.com/robbievanleeuwen/section-properties",
+      "metadata_source": "https://api.github.com/repos/robbievanleeuwen/section-properties",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-04-16T02:56:09Z",
+      "default_branch": "master",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": "Analysis of an arbitrary cross-section in python using the finite element method."
+    },
+    {
+      "repository": "BHoM/BHoM",
+      "url": "https://github.com/BHoM/BHoM",
+      "metadata_source": "https://api.github.com/repos/BHoM/BHoM",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-11T08:21:22Z",
+      "default_branch": "develop",
+      "github_license_detection": "LGPL-3.0",
+      "license_review": null,
+      "description": "The Buildings and Habitats Core object Model repo"
+    },
+    {
+      "repository": "BHoM/Revit_Toolkit",
+      "url": "https://github.com/BHoM/Revit_Toolkit",
+      "metadata_source": "https://api.github.com/repos/BHoM/Revit_Toolkit",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T12:24:17Z",
+      "default_branch": "develop",
+      "github_license_detection": "LGPL-3.0",
+      "license_review": null,
+      "description": "A set of tools enabling exchange of information between BHoM and Revit."
+    },
+    {
+      "repository": "specklesystems/speckle-server",
+      "url": "https://github.com/specklesystems/speckle-server",
+      "metadata_source": "https://api.github.com/repos/specklesystems/speckle-server",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-12T00:29:54Z",
+      "default_branch": "main",
+      "github_license_detection": "NOASSERTION",
+      "license_review": {
+        "license": "Apache-2.0 outside specified Enterprise directories; workspaces and gatekeeper directories use Speckle EE license",
+        "source": "https://raw.githubusercontent.com/specklesystems/speckle-server/main/LICENSE"
+      },
+      "description": "The Speckle Server, Frontend, 3D Viewer, & other JS utilities."
+    },
+    {
+      "repository": "specklesystems/speckle-sharp-connectors",
+      "url": "https://github.com/specklesystems/speckle-sharp-connectors",
+      "metadata_source": "https://api.github.com/repos/specklesystems/speckle-sharp-connectors",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-17T14:53:03Z",
+      "default_branch": "dev",
+      "github_license_detection": "Apache-2.0",
+      "license_review": null,
+      "description": "Speckle Connectors V3"
+    },
+    {
+      "repository": "ThatOpen/engine_web-ifc",
+      "url": "https://github.com/ThatOpen/engine_web-ifc",
+      "metadata_source": "https://api.github.com/repos/ThatOpen/engine_web-ifc",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T08:28:00Z",
+      "default_branch": "main",
+      "github_license_detection": "MPL-2.0",
+      "license_review": null,
+      "description": "Reading and writing IFC files with Javascript, at native speeds."
+    },
+    {
+      "repository": "ThatOpen/engine_components",
+      "url": "https://github.com/ThatOpen/engine_components",
+      "metadata_source": "https://api.github.com/repos/ThatOpen/engine_components",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-11T10:59:26Z",
+      "default_branch": "main",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": null
+    },
+    {
+      "repository": "FreeCAD/FreeCAD",
+      "url": "https://github.com/FreeCAD/FreeCAD",
+      "metadata_source": "https://api.github.com/repos/FreeCAD/FreeCAD",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T23:26:21Z",
+      "default_branch": "main",
+      "github_license_detection": "LGPL-2.1",
+      "license_review": null,
+      "description": "Official source code of FreeCAD, a free and opensource multiplatform 3D parametric modeler."
+    },
+    {
+      "repository": "CadQuery/cadquery",
+      "url": "https://github.com/CadQuery/cadquery",
+      "metadata_source": "https://api.github.com/repos/CadQuery/cadquery",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-13T09:20:36Z",
+      "default_branch": "master",
+      "github_license_detection": "NOASSERTION",
+      "license_review": {
+        "license": "Apache-2.0 for CadQuery; dependencies reviewed separately on adoption",
+        "source": "https://raw.githubusercontent.com/CadQuery/cadquery/master/LICENSE"
+      },
+      "description": "A python parametric CAD scripting framework based on OCCT"
+    },
+    {
+      "repository": "qgis/QGIS",
+      "url": "https://github.com/qgis/QGIS",
+      "metadata_source": "https://api.github.com/repos/qgis/QGIS",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T09:27:51Z",
+      "default_branch": "master",
+      "github_license_detection": "GPL-2.0",
+      "license_review": null,
+      "description": "QGIS is a free, open source, cross platform (lin/win/mac) geographical information system (GIS)"
+    },
+    {
+      "repository": "OSGeo/gdal",
+      "url": "https://github.com/OSGeo/gdal",
+      "metadata_source": "https://api.github.com/repos/OSGeo/gdal",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T13:25:35Z",
+      "default_branch": "master",
+      "github_license_detection": "NOASSERTION",
+      "license_review": {
+        "license": "Primarily MIT/X; component notices in license file",
+        "source": "https://raw.githubusercontent.com/OSGeo/gdal/master/LICENSE.TXT"
+      },
+      "description": "GDAL is an open source MIT licensed translator library for raster and vector geospatial data formats."
+    },
+    {
+      "repository": "maplibre/maplibre-gl-js",
+      "url": "https://github.com/maplibre/maplibre-gl-js",
+      "metadata_source": "https://api.github.com/repos/maplibre/maplibre-gl-js",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-18T09:34:24Z",
+      "default_branch": "main",
+      "github_license_detection": "NOASSERTION",
+      "license_review": {
+        "license": "BSD-3-Clause with included third-party notices",
+        "source": "https://raw.githubusercontent.com/maplibre/maplibre-gl-js/main/LICENSE.txt"
+      },
+      "description": "MapLibre GL JS - Interactive vector tile maps in the browser"
+    },
+    {
+      "repository": "eclipse-sumo/sumo",
+      "url": "https://github.com/eclipse-sumo/sumo",
+      "metadata_source": "https://api.github.com/repos/eclipse-sumo/sumo",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-17T11:10:00Z",
+      "default_branch": "main",
+      "github_license_detection": "EPL-2.0",
+      "license_review": {
+        "license": "EPL-2.0 with GPL secondary-license provisions subject to conditions",
+        "source": "https://sumo.dlr.de/docs/index.html"
+      },
+      "description": "Eclipse SUMO is an open source, highly portable, microscopic and continuous traffic simulation package designed to handle large networks. It allows for intermodal simulation including pedestrians and comes with a large set of tools for scenario creation."
+    },
+    {
+      "repository": "Autodesk/revit-ifc",
+      "url": "https://github.com/Autodesk/revit-ifc",
+      "metadata_source": "https://api.github.com/repos/Autodesk/revit-ifc",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-08-13T16:41:16Z",
+      "default_branch": "master",
+      "github_license_detection": null,
+      "license_review": {
+        "license": "README says LGPLv2; examined source header says LGPL-2.1-or-later; includes proprietary Autodesk.SteelConnections.ASIFC.DLL restricted to this project",
+        "source_detail": "https://github.com/Autodesk/revit-ifc/blob/master/Source/Revit.IFC.Import/Data/IFCRepresentation.cs",
+        "source": "https://github.com/Autodesk/revit-ifc"
+      },
+      "description": "IFC for Revit (2019+) and Navisworks (2019-2024)"
+    },
+    {
+      "repository": "mcneel/rhino.inside-revit",
+      "url": "https://github.com/mcneel/rhino.inside-revit",
+      "metadata_source": "https://api.github.com/repos/mcneel/rhino.inside-revit",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-07-21T18:35:34Z",
+      "default_branch": "1.x",
+      "github_license_detection": "MIT",
+      "license_review": {
+        "license": "MIT connector; requires separately licensed Rhino and Revit runtime",
+        "source": "https://github.com/mcneel/rhino.inside-revit"
+      },
+      "description": "This is the open-source repository for Rhino.Inside®.Revit"
+    },
+    {
+      "repository": "mcp-servers-for-revit/revit-mcp",
+      "url": "https://github.com/mcp-servers-for-revit/revit-mcp",
+      "metadata_source": "https://api.github.com/repos/mcp-servers-for-revit/revit-mcp",
+      "observed_on_utc": "2026-09-19",
+      "archived": true,
+      "pushed_at_utc": "2026-02-25T21:11:11Z",
+      "default_branch": "main",
+      "github_license_detection": "MIT",
+      "license_review": null,
+      "description": "AI-Powered Revit Modeling"
+    },
+    {
+      "repository": "buildingSMART/IDS",
+      "url": "https://github.com/buildingSMART/IDS",
+      "metadata_source": "https://api.github.com/repos/buildingSMART/IDS",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-09-08T17:40:26Z",
+      "default_branch": "development",
+      "github_license_detection": "NOASSERTION",
+      "license_review": {
+        "license": "Standards/specification repository, not classified here as a software runtime dependency; review repository terms for reuse",
+        "source": "https://github.com/buildingSMART/IDS"
+      },
+      "description": "Computer interpretable (XML) standard to define Information Delivery Specifications for BIM (mainly used for IFC)"
+    },
+    {
+      "repository": "anyoptimization/pymoo",
+      "url": "https://github.com/anyoptimization/pymoo",
+      "metadata_source": "https://api.github.com/repos/anyoptimization/pymoo",
+      "observed_on_utc": "2026-09-19",
+      "archived": false,
+      "pushed_at_utc": "2026-07-07T01:34:50Z",
+      "default_branch": "main",
+      "github_license_detection": "Apache-2.0",
+      "license_review": null,
+      "description": "NSGA2, NSGA3, R-NSGA3, MOEAD, Genetic Algorithms (GA), Differential Evolution (DE), CMAES, PSO"
+    }
+  ],
+  "followups": [
+    {
+      "url": "https://github.com/mcp-servers-for-revit/mcp-servers-for-revit",
+      "reason": "Successor linked by the archived revit-mcp repository",
+      "evidence": "README and GitHub license display reviewed via browser research",
+      "license": "MIT",
+      "pushed_at_utc": null,
+      "runtime_tested": false
+    }
+  ],
+  "report": "INVESTIGACION-OPEN-SOURCE.md"
+}

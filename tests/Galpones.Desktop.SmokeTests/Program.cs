@@ -47,6 +47,11 @@ public static class Program
             ((RadioButton)window.FindName("PlanButton")).IsChecked = true;
             Capture(window, Path.Combine(output, "desktop-planta.png"));
 
+            ((RadioButton)window.FindName("SiteButton")).IsChecked = true;
+            Check(editor.SiteLayout is { EstacionamientoAutos.Count: > 0, Muelles.Count: > 0 }, "Simulación de sitio generada");
+            Capture(window, Path.Combine(output, "desktop-sitio.png"));
+            ((RadioButton)window.FindName("AxonButton")).IsChecked = true;
+
             editor.Fields["ancho"].Value = "inválido";
             Check(!editor.Generate() && editor.Model is null, "Datos inválidos limpian la vista");
             Check(editor.ReviewItems.Any(i => i.Estado == "CORREGIR"), "Error de datos visible");

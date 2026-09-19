@@ -13,6 +13,7 @@ El arquitecto define criterios, valida resultados y corrige excepciones. Cada co
 - Apertura y guardado YAML compatibles con el add-in existente.
 - Motor `Galpones.Core` compartido por desktop y Revit.
 - Vista de planta y axonometría del modelo intermedio: niveles, ejes, columnas y vigas.
+- Vista de sitio (planta): implanta la nave a escala dentro del lote rectangular y genera automáticamente estacionamiento de autos y muelles/circulación de transporte pesado a partir de retiros y módulos estándar configurables. Es una simulación de prefactibilidad orientativa (adelanto de SIT-01/SIT-02), no un plano de sitio ni una comprobación normativa: no calcula radios de giro reales ni retiros por ordenanza.
 - Revisión preliminar del pack de zonificación. Se muestran las comprobaciones faltantes; no equivale a aprobación normativa.
 - Exportación de revisión Markdown y modelo JSON en metros.
 - Reutilización del selector de familias de Revit y de la importación desde `familias/` junto al YAML.

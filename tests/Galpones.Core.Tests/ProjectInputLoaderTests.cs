@@ -84,4 +84,23 @@ public class ProjectInputLoaderTests
 
         Assert.Contains(ex.Errors, e => e.Contains("nave.ancho"));
     }
+
+    [Fact]
+    public void LoadFromYaml_RechazaLaNaveSiNoEntraEnElLoteConLosRetirosDeSitio()
+    {
+        var yaml = """
+            tipologia: nave_deposito
+            jurisdiccion: cordoba-capital
+            lote: { frente: 40, fondo: 80, zona: "industrial-2" }
+            nave: { largo: 75, ancho: 25, altura_libre: 8 }
+            estructura: { tipo: porticos_metalicos, modulacion: 6 }
+            piso: { sobrecarga_kN_m2: 30 }
+            electrico: { potencia_kVA: 150, tension: trifasica }
+            logistica: { retiro_frente_m: 15 }
+            """;
+
+        var ex = Assert.Throws<ProjectInputValidationException>(() => ProjectInputLoader.LoadFromYaml(yaml));
+
+        Assert.Contains(ex.Errors, e => e.Contains("logistica.retiro_frente_m"));
+    }
 }

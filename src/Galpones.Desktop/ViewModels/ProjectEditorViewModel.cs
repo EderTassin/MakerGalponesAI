@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using Galpones.Core.Input;
 using Galpones.Core.IntermediateModel;
+using Galpones.Core.Site;
 using Galpones.Core.Workflow;
 
 namespace Galpones.Desktop.ViewModels;
@@ -32,6 +33,7 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
     public string? CurrentPath { get; private set; }
     public ProjectInput? Input { get; private set; }
     public GalponModel? Model { get; private set; }
+    public SiteLayoutModel? SiteLayout { get; private set; }
     public bool IsDirty { get; private set; }
     public bool IsStale { get; private set; }
     public string Status { get; private set; } = "Listo para configurar.";
@@ -43,6 +45,9 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
     public string Beams => Model?.Vigas.Count.ToString() ?? "—";
     public string Ridge => Model is null ? "—" : $"{Model.Levels.Single(l => l.Nombre == "Cumbrera").ElevacionMetros:0.##} m";
     public string PreviewCaption => Input is null ? "Completá los datos para generar la vista." : $"{Input.Nave.Largo:0.##} × {Input.Nave.Ancho:0.##} m  ·  Altura de referencia {Input.Nave.AlturaLibre:0.##} m  ·  Pendiente {Model!.PendienteCubiertaPct:0.##}%";
+    public string ParkingSpots => SiteLayout?.EstacionamientoAutos.Count.ToString() ?? "—";
+    public string TruckDocks => SiteLayout?.Muelles.Count.ToString() ?? "—";
+    public string SitePreviewCaption => SiteLayout is null ? "Completá los datos para simular el sitio." : $"Lote {SiteLayout.LoteFrenteM:0.##} × {SiteLayout.LoteFondoM:0.##} m  ·  {SiteLayout.EstacionamientoAutos.Count} espacios de auto  ·  {SiteLayout.Muelles.Count} muelles de carga";
     private bool _loading;
     private readonly string _rulesDirectory;
 
@@ -61,7 +66,11 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
                 new("columna", "Tipo de columna"), new("viga", "Tipo de viga")]),
             new("04 / Requisitos técnicos", "Se guardan como requisitos. El cálculo y las instalaciones están pendientes.", [
                 new("carga", "Sobrecarga del piso", "kN/m²"), new("potencia", "Potencia eléctrica", "kVA"),
-                new("tension", "Tensión")])
+                new("tension", "Tensión")]),
+            new("05 / Logística de sitio", "Simulación de implantación: dejá vacío para usar los valores por defecto.", [
+                new("retiroFrente", "Retiro al frente (autos)", "m"), new("retiroFondo", "Retiro de fondo", "m"),
+                new("retiroLateral", "Retiro lateral (acceso pesado)", "m"),
+                new("autosCantidad", "Cantidad de autos"), new("camionesCantidad", "Cantidad de muelles")])
         ];
         Fields = Groups.SelectMany(g => g.Fields).ToDictionary(f => f.Key);
         foreach (var field in Fields.Values) field.PropertyChanged += FieldChanged;
@@ -88,6 +97,9 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
         Set("pendiente", input.Estructura.PendienteCubiertaPct ?? GalponModelGenerator.PendienteCubiertaDefaultPct);
         Set("columna", input.Estructura.PerfilColumna); Set("viga", input.Estructura.PerfilViga);
         Set("carga", input.Piso.SobrecargaKnM2); Set("potencia", input.Electrico.PotenciaKva); Set("tension", input.Electrico.Tension);
+        Set("retiroFrente", input.Logistica.RetiroFrenteM); Set("retiroFondo", input.Logistica.RetiroFondoM);
+        Set("retiroLateral", input.Logistica.RetiroLateralM); Set("autosCantidad", input.Logistica.AutosCantidad);
+        Set("camionesCantidad", input.Logistica.CamionesCantidad);
         CurrentPath = path;
         IsDirty = false;
         _loading = false;
@@ -105,6 +117,18 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
             errors.Add($"{Fields[key].Label}: ingresá un número válido, sin separador de miles.");
             return 0;
         }
+        double? NumberOrNull(string key)
+        {
+            if (Text(key).Length == 0) return null;
+            return Number(key);
+        }
+        int? IntOrNull(string key)
+        {
+            if (Text(key).Length == 0) return null;
+            if (int.TryParse(Text(key), NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var value)) return value;
+            errors.Add($"{Fields[key].Label}: ingresá un número entero válido.");
+            return null;
+        }
         var input = new ProjectInput
         {
             Tipologia = "nave_deposito", Jurisdiccion = Text("jurisdiccion"),
@@ -117,7 +141,13 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
                 PerfilViga = string.IsNullOrWhiteSpace(Text("viga")) ? null : Text("viga")
             },
             Piso = new() { SobrecargaKnM2 = Number("carga") },
-            Electrico = new() { PotenciaKva = Number("potencia"), Tension = Text("tension") }
+            Electrico = new() { PotenciaKva = Number("potencia"), Tension = Text("tension") },
+            Logistica = new()
+            {
+                RetiroFrenteM = NumberOrNull("retiroFrente"), RetiroFondoM = NumberOrNull("retiroFondo"),
+                RetiroLateralM = NumberOrNull("retiroLateral"), AutosCantidad = IntOrNull("autosCantidad"),
+                CamionesCantidad = IntOrNull("camionesCantidad"),
+            }
         };
         if (errors.Count != 0) throw new ProjectInputValidationException(errors);
         ProjectInputLoader.Validate(input);
@@ -133,6 +163,7 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
             var review = ProjectReviewService.Evaluate(input, _rulesDirectory);
             Input = input;
             Model = review.Model;
+            SiteLayout = review.SiteLayout;
             foreach (var item in review.Items) ReviewItems.Add(item);
             IsStale = false;
             Status = "Vista actualizada · modelo preliminar para revisión";
@@ -141,7 +172,7 @@ public sealed class ProjectEditorViewModel : INotifyPropertyChanged
         }
         catch (ProjectInputValidationException ex)
         {
-            Input = null; Model = null; IsStale = true;
+            Input = null; Model = null; SiteLayout = null; IsStale = true;
             foreach (var error in ex.Errors) ReviewItems.Add(new("CORREGIR", "Dato de proyecto", error));
             Status = "Hay datos por corregir. Consultá la pestaña Revisión.";
             NotifyAll();

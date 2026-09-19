@@ -3,6 +3,7 @@
 Aplicación Windows para configurar galpones, revisar una estructura preliminar y continuar en Revit. El objetivo es producir un proyecto documentado que el arquitecto pueda corregir y validar.
 
 - [Trabajos pendientes y criterios de aceptación](docs/PLAN-DE-TRABAJO.md)
+- [Investigación de herramientas open source y pruebas de adopción](docs/INVESTIGACION-OPEN-SOURCE.md)
 - [Análisis inicial del prototipo](plugin-revit-galpones.md) — histórico; el plan vigente es el anterior.
 
 ## Abrir la aplicación

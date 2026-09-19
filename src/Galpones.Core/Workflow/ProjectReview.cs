@@ -2,11 +2,12 @@ using System.Text.RegularExpressions;
 using Galpones.Core.Input;
 using Galpones.Core.IntermediateModel;
 using Galpones.Core.Rules;
+using Galpones.Core.Site;
 
 namespace Galpones.Core.Workflow;
 
 public sealed record ReviewItem(string Estado, string Titulo, string Detalle, string Fuente = "");
-public sealed record ProjectReview(GalponModel Model, IReadOnlyList<ReviewItem> Items);
+public sealed record ProjectReview(GalponModel Model, SiteLayoutModel SiteLayout, IReadOnlyList<ReviewItem> Items);
 
 /// <summary>Comparte generación y revisión preliminar entre desktop y futuros adaptadores.</summary>
 public static class ProjectReviewService
@@ -14,7 +15,10 @@ public static class ProjectReviewService
     public static ProjectReview Evaluate(ProjectInput input, string rulesDirectory)
     {
         var model = GalponModelGenerator.Generate(input);
+        var siteLayout = SiteLayoutGenerator.Generate(input, model);
         var items = new List<ReviewItem>();
+        foreach (var advertencia in siteLayout.Advertencias)
+            items.Add(new("PENDIENTE", "Simulación de sitio", advertencia));
         // Una jurisdicción del archivo nunca debe convertirse en una ruta arbitraria.
         var validFolder = Regex.IsMatch(input.Jurisdiccion, "^[a-zA-Z0-9_-]+$");
         var rulePath = validFolder ? Path.Combine(rulesDirectory, input.Jurisdiccion, "zonificacion.yaml") : "";
@@ -47,6 +51,6 @@ public static class ProjectReviewService
         if (string.IsNullOrWhiteSpace(input.Estructura.PerfilColumna) || string.IsNullOrWhiteSpace(input.Estructura.PerfilViga))
             items.Add(new("PENDIENTE", "Selección de familias", "Elegí las familias de columna y viga en Revit antes de generar. Los nombres escritos deben existir en el documento de destino."));
         items.Add(new("PENDIENTE", "Desarrollo y documentación", "Cubierta física, cerramientos, piso, aberturas, instalaciones y planos todavía no se generan en esta versión."));
-        return new(model, items);
+        return new(model, siteLayout, items);
     }
 }

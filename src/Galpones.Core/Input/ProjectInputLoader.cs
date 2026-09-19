@@ -43,6 +43,7 @@ public static class ProjectInputLoader
 
         if (input.Lote is null || input.Nave is null || input.Estructura is null || input.Piso is null || input.Electrico is null)
             throw new ProjectInputValidationException(["Las secciones lote, nave, estructura, piso y electrico no pueden estar vacías."]);
+        input.Logistica ??= new();
 
         if (string.IsNullOrWhiteSpace(input.Tipologia))
             errors.Add("tipologia es obligatoria");
@@ -97,6 +98,35 @@ public static class ProjectInputLoader
             errors.Add("piso.sobrecarga_kN_m2 debe ser mayor a 0");
         if (input.Electrico.PotenciaKva < 0)
             errors.Add("electrico.potencia_kVA no puede ser negativa");
+
+        if (input.Logistica.RetiroFrenteM is <= 0)
+            errors.Add("logistica.retiro_frente_m debe ser mayor a 0");
+        if (input.Logistica.RetiroFondoM is <= 0)
+            errors.Add("logistica.retiro_fondo_m debe ser mayor a 0");
+        if (input.Logistica.RetiroLateralM is <= 0)
+            errors.Add("logistica.retiro_lateral_m debe ser mayor a 0");
+        if (input.Logistica.AutosCantidad is < 0)
+            errors.Add("logistica.autos_cantidad no puede ser negativa");
+        if (input.Logistica.CamionesCantidad is < 0)
+            errors.Add("logistica.camiones_cantidad no puede ser negativa");
+
+        // El sitio (Galpones.Core.Site) implanta la nave dentro del lote con estos retiros; si no
+        // entra, mejor rechazarlo acá con un mensaje claro que dejar que el generador de sitio falle.
+        if (input.Nave.Ancho > 0 && input.Lote.Frente > 0)
+        {
+            var retiroLateral = input.Logistica.RetiroLateralM ?? LogisticaInput.RetiroLateralDefaultM;
+            var anchoRequerido = input.Nave.Ancho + 2 * retiroLateral;
+            if (anchoRequerido > input.Lote.Frente)
+                errors.Add($"nave.ancho + 2×logistica.retiro_lateral_m ({anchoRequerido:0.##} m) no puede exceder lote.frente ({input.Lote.Frente:0.##} m)");
+        }
+        if (input.Nave.Largo > 0 && input.Lote.Fondo > 0)
+        {
+            var retiroFrente = input.Logistica.RetiroFrenteM ?? LogisticaInput.RetiroFrenteDefaultM;
+            var retiroFondo = input.Logistica.RetiroFondoM ?? LogisticaInput.RetiroFondoDefaultM;
+            var fondoRequerido = input.Nave.Largo + retiroFrente + retiroFondo;
+            if (fondoRequerido > input.Lote.Fondo)
+                errors.Add($"nave.largo + logistica.retiro_frente_m + logistica.retiro_fondo_m ({fondoRequerido:0.##} m) no puede exceder lote.fondo ({input.Lote.Fondo:0.##} m)");
+        }
 
         if (errors.Count > 0)
             throw new ProjectInputValidationException(errors);

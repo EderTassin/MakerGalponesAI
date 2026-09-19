@@ -33,7 +33,15 @@ public partial class MainWindow : Window
     }
     private void ViewMode_Changed(object sender, RoutedEventArgs e)
     {
-        if (Preview is not null) Preview.IsPlan = PlanButton?.IsChecked == true;
+        if (Preview is null) return;
+        Preview.IsPlan = PlanButton?.IsChecked == true;
+        var isSite = SiteButton?.IsChecked == true;
+        Preview.Visibility = isSite ? Visibility.Collapsed : Visibility.Visible;
+        SitePreviewControl.Visibility = isSite ? Visibility.Visible : Visibility.Collapsed;
+        StructureDescription.Visibility = isSite ? Visibility.Collapsed : Visibility.Visible;
+        SiteDescription.Visibility = isSite ? Visibility.Visible : Visibility.Collapsed;
+        StructureCaption.Visibility = isSite ? Visibility.Collapsed : Visibility.Visible;
+        SiteCaption.Visibility = isSite ? Visibility.Visible : Visibility.Collapsed;
     }
 
     private void New_Click(object sender, RoutedEventArgs e)
