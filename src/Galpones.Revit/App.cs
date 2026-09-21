@@ -9,6 +9,9 @@ public sealed class App : IExternalApplication
 
     public Result OnStartup(UIControlledApplication application)
     {
+        // Antes de que cualquier comando toque Galpones.Core (y por lo tanto YamlDotNet).
+        AddinDependencyResolver.Register();
+
         application.CreateRibbonTab(TabName);
         var panel = application.CreateRibbonPanel(TabName, "Generador");
 
@@ -28,5 +31,9 @@ public sealed class App : IExternalApplication
         return Result.Succeeded;
     }
 
-    public Result OnShutdown(UIControlledApplication application) => Result.Succeeded;
+    public Result OnShutdown(UIControlledApplication application)
+    {
+        AddinDependencyResolver.Unregister();
+        return Result.Succeeded;
+    }
 }
